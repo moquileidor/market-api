@@ -3,6 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { ArrowLeft, Package, Tag } from 'lucide-react';
+import { AddToCartButton } from '@/components/AddToCartButton';
 
 async function getProduct(id: string): Promise<Product> {
   const url = `${process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001/api'}/products/${id}`;
@@ -102,19 +103,14 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
           </div>
 
           {/* CTA */}
-          <button
-            disabled={!inStock}
-            className="w-full py-4 rounded-xl text-base font-semibold transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed hover:opacity-90 active:scale-[0.98]"
-            style={{ backgroundColor: '#059669', color: '#ffffff' }}
-          >
-            Agregar al carrito
-          </button>
+          <AddToCartButton productId={product.id} inStock={inStock} />
 
           {!inStock && (
             <p className="text-xs text-center mt-3" style={{ color: '#9ca3af' }}>
               Este producto no está disponible por el momento.
             </p>
           )}
+
         </div>
       </div>
     </div>
