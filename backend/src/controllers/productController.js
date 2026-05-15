@@ -2,6 +2,17 @@ const { Op } = require('sequelize');
 const { Product, Category } = require('../models');
 const { apiSuccess, apiError } = require('../utils/apiResponse');
 
+const buildProductInclude = (category) => {
+  const categoryInclude = { model: Category, as: 'categories', through: { attributes: [] } };
+  if (category) {
+    categoryInclude.where = {
+      [Op.or]: [{ slug: category }, { id: Number.isNaN(Number(category)) ? -1 : Number(category) }],
+    };
+    categoryInclude.required = true;
+  }
+  return [categoryInclude];
+};
+
 const productInclude = [{ model: Category, as: 'categories', through: { attributes: [] } }];
 
 const list = async (req, res, next) => {
@@ -20,13 +31,7 @@ const list = async (req, res, next) => {
       ];
     }
 
-    const include = [...productInclude];
-    if (category) {
-      include[0].where = {
-        [Op.or]: [{ slug: category }, { id: Number.isNaN(Number(category)) ? -1 : Number(category) }],
-      };
-      include[0].required = true;
-    }
+    const include = buildProductInclude(category);
 
     const { count, rows } = await Product.findAndCountAll({
       where,
