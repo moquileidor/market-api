@@ -35,6 +35,12 @@ export function Navbar() {
           {user && (
             <Link href="/orders" className="hover:text-black transition-colors">Mis órdenes</Link>
           )}
+          {user?.role === 'admin' && (
+            <>
+              <Link href="/admin/products" className="hover:text-black transition-colors">Admin productos</Link>
+              <Link href="/admin/orders" className="hover:text-black transition-colors">Admin órdenes</Link>
+            </>
+          )}
         </nav>
 
         {/* Actions */}

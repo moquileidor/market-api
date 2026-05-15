@@ -12,8 +12,9 @@ const orderInclude = [
 
 const list = async (req, res, next) => {
   try {
+    const where = req.user.role === 'admin' ? {} : { userId: req.user.id };
     const orders = await Order.findAll({
-      where: { userId: req.user.id },
+      where,
       include: orderInclude,
       order: [['createdAt', 'DESC']],
     });
