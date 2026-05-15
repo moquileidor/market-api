@@ -30,7 +30,7 @@ module.exports = (sequelize) =>
       indexes: [
         {
           unique: true,
-          fields: ['cartId', 'productId'],
+          fields: ['cart_id', 'product_id'],
         },
       ],
     }
