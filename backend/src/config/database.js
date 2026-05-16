@@ -15,11 +15,10 @@ const sequelize = new Sequelize(databaseUrl, {
   define: {
     underscored: true,
   },
-  dialectOptions: useSSL
-    ? {
-        ssl: { require: true, rejectUnauthorized: false },
-      }
-    : {},
+  dialectOptions: {
+    ...(useSSL ? { ssl: { require: true, rejectUnauthorized: false } } : {}),
+    family: 4,
+  },
 });
 
 module.exports = sequelize;
